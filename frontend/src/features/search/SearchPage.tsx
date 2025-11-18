@@ -1,5 +1,5 @@
-import { useState, type FormEvent } from "react";
-import { addSearchHistory, search, type SearchResult } from "../../lib/api";
+import { type FormEvent, useState } from "react";
+import type { SearchResult } from "../../lib/api";
 
 export const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -7,13 +7,13 @@ export const SearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>();
 
-  async function handleSearch(event: FormEvent) {
-    event.preventDefault();
-
+  async function handleSearch(rawQuery: string) {
     const trimmed = query.trim();
     if (!trimmed) {
       return;
     }
+    // Keep input in sync when triggered from RecentSearches
+    setQuery(rawQuery);
 
     // TODO (candidate):
     // - Call the /api/search endpoint with the current query.
@@ -21,10 +21,15 @@ export const SearchPage = () => {
     // - Use `loading` and `error` to reflect request state.
   }
 
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    void handleSearch(query);
+  };
+
   return (
     <div>
       <form
-        onSubmit={handleSearch}
+        onSubmit={handleSubmit}
         style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}
       >
         <input
@@ -46,7 +51,7 @@ export const SearchPage = () => {
         <div>No results yet. Try searching for something.</div>
       )}
 
-      {results?.length && results.length > 0 && (
+      {results && results.length > 0 && (
         <ul>
           {results.map((r) => (
             <li key={r.document.id} style={{ marginBottom: "0.5rem" }}>
