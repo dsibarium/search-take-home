@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from "react";
 import type { SearchResult } from "../../lib/api";
+import { search as apiSearch } from "../../lib/api";
 
 export const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -8,17 +9,23 @@ export const SearchPage = () => {
   const [error, setError] = useState<string | null>();
 
   async function handleSearch(rawQuery: string) {
-    const trimmed = query.trim();
-    if (!trimmed) {
-      return;
-    }
+    const trimmed = rawQuery.trim();
+    if (!trimmed) return;
+
     // Keep input in sync when triggered from RecentSearches
     setQuery(rawQuery);
 
-    // TODO (candidate):
-    // - Call the /api/search endpoint with the current query.
-    // - Update `results` with the returned data.
-    // - Use `loading` and `error` to reflect request state.
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await apiSearch(trimmed);
+      setResults(res as unknown as SearchResult[]);
+    } catch (err: any) {
+      setError(err?.message ?? "Search failed");
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const handleSubmit = (event: FormEvent) => {
@@ -53,16 +60,25 @@ export const SearchPage = () => {
 
       {results && results.length > 0 && (
         <ul>
-          {results.map((r) => (
-            <li key={r.document.id} style={{ marginBottom: "0.5rem" }}>
-              <strong>{r.document.title}</strong> (score: {r.score.toFixed(3)})
-              {r.reason && (
-                <div style={{ fontSize: "0.85rem", color: "#555" }}>
-                  {r.reason}
+          {results.map((r, idx) => {
+            const doc: any = r.document as any;
+            const id = doc?.metadata?.id ?? doc?.id ?? idx;
+            const title = doc?.metadata?.title ?? doc?.title ?? "(no title)";
+            const body = doc?.page_content ?? doc?.body ?? "";
+            return (
+              <li key={String(id)} style={{ marginBottom: "0.5rem" }}>
+                <strong>{title}</strong> (score: {r.score.toFixed(3)})
+                <div style={{ fontSize: "0.9rem", color: "#333" }}>
+                  {body}
                 </div>
-              )}
-            </li>
-          ))}
+                {r.reason && (
+                  <div style={{ fontSize: "0.85rem", color: "#555" }}>
+                    {r.reason}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

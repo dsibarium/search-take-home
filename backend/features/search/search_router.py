@@ -21,6 +21,16 @@ async def search(request: SearchRequest) -> list[SearchResult]:
     if not query:
         raise HTTPException(status_code=400, detail="Query must not be empty.")
 
-    # TODO: implement ranking
-    results: list[SearchResult] = []  # await search_documents(...)
+    # Run the search over our in-memory documents
+    results = search_documents(query, DOCUMENTS, top_k=request.top_k)
+
+    # Record search to history (non-blocking)
+    try:
+        SEARCH_HISTORY.append(
+            SearchEntry(query=query, timestamp=__import__("datetime").datetime.now())
+        )
+    except Exception:
+        # Do not fail the request for a history write error
+        pass
+
     return results

@@ -14,3 +14,5 @@ frontend/node_modules
 
 backend/.venv
 backend/**/__pycache__
+#.env file with local secrets
+.env

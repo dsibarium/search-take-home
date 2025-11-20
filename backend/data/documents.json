@@ -15,4 +15,37 @@
 		"page_content": "To bake bread, you need flour, yeast, and an oven!",
 		"metadata": {"id": 4, "title": "Baking Bread: How-To"}
 	}
+,
+	{
+		"page_content": "Sourdough is a type of bread made by the fermentation of dough using naturally occurring lactobacilli and yeast.",
+		"metadata": {"id": 5, "title": "Sourdough Basics"}
+	},
+	{
+		"page_content": "Neural networks are a set of algorithms, modeled loosely after the human brain, that are designed to recognize patterns.",
+		"metadata": {"id": 6, "title": "Neural Networks Overview"}
+	},
+	{
+		"page_content": "Prompt engineering is the art of crafting inputs to language models to get useful and reliable outputs.",
+		"metadata": {"id": 7, "title": "Prompt Engineering 101"}
+	},
+	{
+		"page_content": "FAISS is a library for efficient similarity search and clustering of dense vectors, often used with embeddings.",
+		"metadata": {"id": 8, "title": "Indexing with FAISS"}
+	},
+	{
+		"page_content": "Python tips: use list comprehensions for concise loops, and generators for memory-efficient iteration.",
+		"metadata": {"id": 9, "title": "Python Productivity Tips"}
+	},
+	{
+		"page_content": "Climate change refers to long-term shifts in temperatures and weather patterns, primarily caused by human activities.",
+		"metadata": {"id": 10, "title": "Climate Change Summary"}
+	},
+	{
+		"page_content": "Productivity practices like time-blocking and the Pomodoro technique can improve focus and output.",
+		"metadata": {"id": 11, "title": "Productivity Techniques"}
+	},
+	{
+		"page_content": "Docker allows developers to package applications into containers — standardized executable components combining application source code with the operating system libraries and dependencies required to run that code in any environment.",
+		"metadata": {"id": 12, "title": "Intro to Docker"}
+	}
 ]
