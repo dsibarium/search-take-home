@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from .data import DOCUMENTS  # noqa: F401
+from .data import DOCUMENTS
 from .models import SearchEntry, SearchRequest, SearchResult
 from .integrations import search_documents
 
@@ -21,6 +21,5 @@ async def search(request: SearchRequest) -> list[SearchResult]:
     if not query:
         raise HTTPException(status_code=400, detail="Query must not be empty.")
 
-    # TODO: implement ranking
-    results: list[SearchResult] = []  # await search_documents(...)
+    results = await search_documents(query, DOCUMENTS, top_k=request.top_k)
     return results
