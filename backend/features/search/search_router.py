@@ -21,6 +21,6 @@ async def search(request: SearchRequest) -> list[SearchResult]:
     if not query:
         raise HTTPException(status_code=400, detail="Query must not be empty.")
 
-    # TODO: implement ranking
-    results: list[SearchResult] = []  # await search_documents(...)
+    # Use the integrations helper to perform a vector + KG search and ranking.
+    results: list[SearchResult] = search_documents(query, DOCUMENTS, top_k=request.top_k)
     return results
